@@ -86,7 +86,7 @@ export class ClockDatabase extends Collection {
             this.set(clock.id, clock);
         }
 
-        if (canvas.ready) {
+        if (game.ready) {
             window.clockPanel.render(true);
         }
     }

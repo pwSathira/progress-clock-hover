@@ -54,7 +54,6 @@ export class ClockPanel extends fapi.HandlebarsApplicationMixin(fapi.Application
 
     async _prepareContext() {
         const clocks = await this.prepareClocks();
-        const enabled = game.settings.get(MODULE_ID, "enabledTypes");
 
         return {
             options: {
