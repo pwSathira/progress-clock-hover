@@ -39,7 +39,8 @@ export class ClockDatabase extends Collection {
         if (!existing) return;
 
         const newData = foundry.utils.mergeObject(foundry.utils.duplicate(existing), data);
-        const newValue = Math.clamp(newData.value, 0, newData.max);
+        const min = newData.type === "points" ? -99 : 0;
+        const newValue = Math.clamp(newData.value, min, newData.max);
         if (game.user.hasPermission('SETTINGS_MODIFY')) {
             Object.assign(existing, newData);
             existing.value = newValue;
@@ -75,7 +76,10 @@ export class ClockDatabase extends Collection {
     #getClockData() {
         const entries = game.settings.get(MODULE_ID, "activeClocks");
         for (const key of Object.keys(entries)) {
-            entries[key] = { ...DEFAULT_CLOCK, ...entries[key] };
+            const data = { ...DEFAULT_CLOCK, ...entries[key] };        
+            const min = data.type === "points" ? -99 : 0;
+            data.value = Math.clamp(data.value ?? 0, min, data.max ?? Infinity);
+            entries[key] = data;
         }
         return entries;
     }

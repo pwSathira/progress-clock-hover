@@ -76,7 +76,6 @@ export class ClockPanel extends fapi.HandlebarsApplicationMixin(fapi.Application
         const editable = this.db.canUserEdit(game.user);
         return clocks.map((data) => ({
             ...data,
-            value: Math.clamp(data.value, 0, data.max),
             backgroundColor,
             color: clockColors.find((c) => c.id === data.colorId)?.color ?? defaultColor,
             spokes: data.max > maxSpokes ? [] : Array(data.max).keys(),
@@ -133,7 +132,8 @@ export class ClockPanel extends fapi.HandlebarsApplicationMixin(fapi.Application
                 const clock = this.db.get(clockId);
                 if (!clock) return;
 
-                clock.value = clock.value <= 0 ? clock.max : clock.value - 1;
+                const min = clock.type === "points" ? -99 : 0;
+                clock.value = clock.value <= min ? clock.max : clock.value - 1;
                 this.db.update(clock);
             });
         }
