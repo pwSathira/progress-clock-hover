@@ -55,7 +55,10 @@ export class ClockAddDialog extends fapi.HandlebarsApplicationMixin(fapi.Applica
             maxSize: CLOCK_MAX_SIZE,
             presetSizes: CLOCK_SIZES,
             trackerSizes: TRACKER_SIZES,
-            clockColors: game.settings.get(MODULE_ID, "clockColors"),
+            clockColors: game.settings.get(MODULE_ID, "clockColors").reduce((r, c) => {
+                r[c.id] = c.name;
+                return r;
+            }, {}),
             defaultSize: this.entry?.max ?? 4,
         }
     }

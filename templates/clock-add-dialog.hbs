@@ -53,12 +53,7 @@
             <div class="form-group">
                 <label>{{localize "GlobalProgressClocks.CreateDialog.Color"}}</label>
                 <select name="colorId">
-                    {{#select entry.colorId}}
-                        <option>{{localize "GlobalProgressClocks.CreateDialog.Default"}}</option>
-                        {{#each clockColors as |color|}}
-                            <option value="{{color.id}}">{{color.name}}</option>
-                        {{/each}}
-                    {{/select}}
+                    {{selectOptions clockColors selected=entry.colorId blank=(localize "GlobalProgressClocks.CreateDialog.Default")}}
                 </select>
             </div>
         {{/if}}
