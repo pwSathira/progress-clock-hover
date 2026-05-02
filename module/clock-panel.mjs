@@ -32,6 +32,7 @@ export class ClockPanel extends fapi.HandlebarsApplicationMixin(fapi.Application
             addPoints: ClockPanel.#onAddPoints,
             editEntry: ClockPanel.#onEditEntry,
             deleteEntry: ClockPanel.#onDeleteEntry,
+            toggleMinimize: ClockPanel.#onToggleMinimize,
         },
     };
 
@@ -104,6 +105,41 @@ export class ClockPanel extends fapi.HandlebarsApplicationMixin(fapi.Application
                     element.insertBefore(html, players);
                 }
             }
+        }
+
+        // Restore minimized state
+        const minimized = sessionStorage.getItem("clockPanelMinimized") === "true";
+        if (minimized) {
+            html.classList.add("minimized");
+        } else {
+            html.classList.remove("minimized");
+        }
+
+        // Restore always visible state
+        const alwaysVisible = sessionStorage.getItem("clockPanelAlwaysVisible") === "true";
+        if (alwaysVisible) {
+            html.classList.add("always-visible");
+        } else {
+            html.classList.remove("always-visible");
+        }
+
+        // Handle minimize button click
+        const minimizeBtn = html.querySelector(".minimize-btn");
+        if (minimizeBtn) {
+            minimizeBtn.addEventListener("click", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                html.classList.toggle("minimized");
+                sessionStorage.setItem("clockPanelMinimized", html.classList.contains("minimized"));
+            });
+
+            // Handle right-click for always visible toggle
+            minimizeBtn.addEventListener("contextmenu", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                html.classList.toggle("always-visible");
+                sessionStorage.setItem("clockPanelAlwaysVisible", html.classList.contains("always-visible"));
+            });
         }
 
         // Fade in all new rendered clocks
@@ -207,6 +243,14 @@ export class ClockPanel extends fapi.HandlebarsApplicationMixin(fapi.Application
 
         if (deleting) {
             this.db.delete(clockId);
+        }
+    }
+
+    static #onToggleMinimize() {
+        const element = document.querySelector("#clock-panel");
+        if (element) {
+            element.classList.toggle("minimized");
+            sessionStorage.setItem("clockPanelMinimized", element.classList.contains("minimized"));
         }
     }
 }

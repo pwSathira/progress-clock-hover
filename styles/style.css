@@ -20,12 +20,67 @@ body:has(#effects-panel .effect-item) #clock-panel {
     --entry-width: 190px;
     --max-entry-width: 285px; /* If this goes too high, the enter message becomes weird */
 
-    /** We need these components to be visible, and the default is quite low */
-    opacity: max(var(--ui-fade-opacity), 0.9);
-    display: flex;
-    flex-direction: column;
-    width: fit-content;
-    overflow: hidden;
+    .clock-panel-wrapper {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        gap: 4px;
+        width: fit-content;
+        overflow: visible;
+        /** We need these components to be visible, and the default is quite low */
+        opacity: max(var(--ui-fade-opacity), 0.9);
+    }
+
+    .minimize-btn {
+        --control-size: 28px;
+        padding: 8px;
+        width: var(--control-size);
+        height: var(--control-size);
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--control-bg-color);
+        border: 1px solid var(--control-border-color);
+        border-radius: 4px;
+        color: var(--control-icon-color);
+        cursor: pointer;
+        transition: all 0.2s ease-out;
+        z-index: 10;
+        pointer-events: all;
+        opacity: 0;
+        max-width: 0;
+        overflow: visible;
+        box-sizing: content-box;
+    }
+
+    .minimize-btn:hover {
+        background: var(--control-bg-hover);
+    }
+
+    &.minimized .minimize-btn {
+        opacity: max(var(--ui-fade-opacity), 0.9);
+        max-width: var(--control-size);
+    }
+
+    &.always-visible .minimize-btn {
+        background: var(--control-bg-active, var(--control-bg-color));
+        border-color: var(--control-border-active, var(--control-border-color));
+        box-shadow: inset 0 0 0 2px var(--primary-highlight-color, #4a90e2);
+    }
+
+    &:hover .minimize-btn {
+        opacity: max(var(--ui-fade-opacity), 0.9);
+        max-width: calc(var(--control-size) + 16px);
+    }
+
+    &.minimized .clock-display {
+        display: none;
+    }
+
+    &.minimized .minimize-btn i {
+        transform: rotate(180deg);
+    }
 
     .clock-list,
     button {
@@ -43,6 +98,13 @@ body:has(#effects-panel .effect-item) #clock-panel {
         flex: 1 1 0;
         justify-content: flex-end;
     }
+
+    .clock-content {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        overflow: hidden;
+    }
 }
 
 .clock-display {
@@ -55,6 +117,20 @@ body:has(#effects-panel .effect-item) #clock-panel {
     pointer-events: unset;
     max-height: 100%;
     min-width: var(--entry-width);
+    opacity: 0;
+    max-width: 0;
+    overflow: hidden;
+    transition: all 0.2s ease-out;
+
+    #clock-panel:hover & {
+        opacity: max(var(--ui-fade-opacity), 0.9);
+        max-width: 1000px;
+    }
+
+    #clock-panel.always-visible & {
+        opacity: max(var(--ui-fade-opacity), 0.9);
+        max-width: 1000px;
+    }
 
     &.right {
         .clock-list {
