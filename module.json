@@ -32,7 +32,7 @@
     "styles/dialog.css",
     "styles/settings.css"
   ],
-  "url": "https://github.com/CarlosFdez/global-progress-clocks",
-  "manifest": "https://github.com/CarlosFdez/global-progress-clocks/releases/latest/download/module.json",
-  "download": "https://github.com/CarlosFdez/global-progress-clocks/releases/download/v1.3.1/module.zip"
+  "url": "https://github.com/pwSathira/progress-clock-hover",
+  "manifest": "https://github.com/pwSathira/progress-clock-hover/releases/latest/download/module.json",
+  "download": "https://github.com/pwSathira/progress-clock-hover/releases/download/v1.3.1/module.zip"
 }
